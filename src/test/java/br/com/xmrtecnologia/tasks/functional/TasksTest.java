@@ -1,4 +1,4 @@
-package br.com.xmrtecnologia.tasks;
+package br.com.xmrtecnologia.tasks.functional;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,12 +20,11 @@ public class TasksTest {
         
         // Para saber esta URL tem que ver ao executar o arquivo: Start_Selenium_Server_3.141.59.bat
         // ou execute ipconfig no terminal para pegar o IP
-        URL urlHub = new URL("http://192.168.56.1:4444/wd/hub");
-        DesiredCapabilities cap = DesiredCapabilities.chrome();
-
+        URL urlHub = new URL("http://192.168.56.1:4444/wd/hub"); // Trabalhando com o Selenium Grid
+        DesiredCapabilities cap = DesiredCapabilities.chrome();  // Trabalhando com o Selenium Grid
         WebDriver webDriver = new RemoteWebDriver(urlHub, cap);  // Trabalhando com o Selenium Grid
-
-        webDriver.navigate().to("http://192.168.56.1:8001/tasks");
+        webDriver.navigate().to("http://192.168.56.1:8001/tasks");  // Trabalhando com o Selenium Grid
+        
         // webDriver.navigate().to("http://localhost:8001/tasks");  // Trabalhando com o Selenium Local
 
         // Definindo uma estratégia de espera para o Selenium
