@@ -13,19 +13,21 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class TasksTest {
-    
+
     public WebDriver acessarAplicacao() throws MalformedURLException {
 
-        // WebDriver webDriver = new ChromeDriver();  // Trabalhando com o Selenium Local
-        
-        // Para saber esta URL tem que ver ao executar o arquivo: Start_Selenium_Server_3.141.59.bat
+        // WebDriver webDriver = new ChromeDriver(); // Trabalhando com o Selenium Local
+
+        // Para saber esta URL tem que ver ao executar o arquivo:
+        // Start_Selenium_Server_3.141.59.bat
         // ou execute ipconfig no terminal para pegar o IP
         URL urlHub = new URL("http://192.168.56.1:4444/wd/hub"); // Trabalhando com o Selenium Grid
-        DesiredCapabilities cap = DesiredCapabilities.chrome();  // Trabalhando com o Selenium Grid
-        WebDriver webDriver = new RemoteWebDriver(urlHub, cap);  // Trabalhando com o Selenium Grid
-        webDriver.navigate().to("http://192.168.56.1:8001/tasks");  // Trabalhando com o Selenium Grid
-        
-        // webDriver.navigate().to("http://localhost:8001/tasks");  // Trabalhando com o Selenium Local
+        DesiredCapabilities cap = DesiredCapabilities.chrome(); // Trabalhando com o Selenium Grid
+        WebDriver webDriver = new RemoteWebDriver(urlHub, cap); // Trabalhando com o Selenium Grid
+        webDriver.navigate().to("http://192.168.56.1:8001/tasks"); // Trabalhando com o Selenium Grid
+
+        // webDriver.navigate().to("http://localhost:8001/tasks"); // Trabalhando com o
+        // Selenium Local
 
         // Definindo uma estratégia de espera para o Selenium
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); // Esperando 10 segundos
@@ -34,31 +36,31 @@ public class TasksTest {
 
     // @Test
     // public void testeAmbiente() {
-    //     WebDriver webDriver = new ChromeDriver();
-    //     webDriver.navigate().to("http://www.google.com");
+    // WebDriver webDriver = new ChromeDriver();
+    // webDriver.navigate().to("http://www.google.com");
     // }
 
     @Test
     public void deveSalvarTarefaComSucessoTest() throws MalformedURLException {
         WebDriver webDriver = acessarAplicacao();
         try {
-    
+
             // Clicar em Add Todo
             webDriver.findElement(By.id("addTodo")).click();
-            
+
             // Escrever a Descrição
             webDriver.findElement(By.id("task")).sendKeys("Teste via Selenium");
-            
+
             // Escrever a Data
             webDriver.findElement(By.id("dueDate")).sendKeys("10/10/2050");
-            
+
             // Clicar no Botão Save
             webDriver.findElement(By.id("saveButton")).click();
-    
+
             // Validar mensagem de Sucesso
             String message = webDriver.findElement(By.id("message")).getText();
             Assert.assertEquals("Success!", message);
-            
+
         } finally {
             // Fechar o Browser
             webDriver.quit();
@@ -69,23 +71,23 @@ public class TasksTest {
     public void naoDeveSalvarTarefaSemDescricaoTest() throws MalformedURLException {
         WebDriver webDriver = acessarAplicacao();
         try {
-    
+
             // Clicar em Add Todo
             webDriver.findElement(By.id("addTodo")).click();
-            
+
             // Escrever a Descrição
             // webDriver.findElement(By.id("task")).sendKeys("Teste via Selenium");
-            
+
             // Escrever a Data
             webDriver.findElement(By.id("dueDate")).sendKeys("10/10/2050");
-            
+
             // Clicar no Botão Save
             webDriver.findElement(By.id("saveButton")).click();
-    
+
             // Validar mensagem de Sucesso
             String message = webDriver.findElement(By.id("message")).getText();
             Assert.assertEquals("Fill the task description", message);
-            
+
         } finally {
             // Fechar o Browser
             webDriver.quit();
@@ -97,23 +99,23 @@ public class TasksTest {
     public void naoDeveSalvarTarefaSemDataTest() throws MalformedURLException {
         WebDriver webDriver = acessarAplicacao();
         try {
-    
+
             // Clicar em Add Todo
             webDriver.findElement(By.id("addTodo")).click();
-            
+
             // Escrever a Descrição
             webDriver.findElement(By.id("task")).sendKeys("Teste via Selenium");
-            
+
             // Escrever a Data
             // webDriver.findElement(By.id("dueDate")).sendKeys("10/10/2050");
-            
+
             // Clicar no Botão Save
             webDriver.findElement(By.id("saveButton")).click();
-    
+
             // Validar mensagem de Sucesso
             String message = webDriver.findElement(By.id("message")).getText();
             Assert.assertEquals("Fill the due date", message);
-            
+
         } finally {
             // Fechar o Browser
             webDriver.quit();
@@ -125,23 +127,50 @@ public class TasksTest {
     public void naoDeveSalvarTarefaComDataPassadaTest() throws MalformedURLException {
         WebDriver webDriver = acessarAplicacao();
         try {
-    
+
             // Clicar em Add Todo
             webDriver.findElement(By.id("addTodo")).click();
-            
+
             // Escrever a Descrição
             webDriver.findElement(By.id("task")).sendKeys("Teste via Selenium");
-            
+
             // Escrever a Data
             webDriver.findElement(By.id("dueDate")).sendKeys("10/10/2010");
-            
+
             // Clicar no Botão Save
             webDriver.findElement(By.id("saveButton")).click();
-    
+
             // Validar mensagem de Sucesso
             String message = webDriver.findElement(By.id("message")).getText();
             Assert.assertEquals("Due date must not be in past", message);
-            
+
+        } finally {
+            // Fechar o Browser
+            webDriver.quit();
+        }
+
+    }
+
+    @Test
+    public void deveRemoverTarefaComSucessoTest() throws MalformedURLException {
+        WebDriver webDriver = acessarAplicacao();
+        try {
+
+            // Inserir uma tarefa
+            webDriver.findElement(By.id("addTodo")).click();
+            webDriver.findElement(By.id("task")).sendKeys("Teste via Selenium");
+            webDriver.findElement(By.id("dueDate")).sendKeys("10/10/2050");
+            webDriver.findElement(By.id("saveButton")).click();
+            String message = webDriver.findElement(By.id("message")).getText();
+            Assert.assertEquals("Success!", message);
+
+            // Clicar em Remove
+            webDriver.findElement(By.xpath("//a[@class='btn btn-outline-danger btn-sm']")).click();
+
+            // Validar mensagem de Sucesso
+            message = webDriver.findElement(By.id("message")).getText();
+            Assert.assertEquals("Success!", message);
+
         } finally {
             // Fechar o Browser
             webDriver.quit();
